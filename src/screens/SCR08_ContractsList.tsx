@@ -37,7 +37,7 @@ export function ContractsList() {
       })
       .catch(() => {
         if (cancelled) return;
-        showError('Chyba pri nacitani smluv');
+        showError('Chyba při načítání smluv');
         setState('error');
       });
 
@@ -46,15 +46,15 @@ export function ContractsList() {
     };
   }, [showError]);
 
-  if (state === 'loading') return <LoadingSpinner size="lg" message="Nacitani smluv..." />;
+  if (state === 'loading') return <LoadingSpinner size="lg" message="Načítání smluv..." />;
   if (state === 'error')
-    return <div className="text-center py-12 text-red-600">Chyba pri nacitani dat.</div>;
+    return <div className="text-center py-12 text-red-600">Chyba při načítání dat.</div>;
 
   const columns: DataTableColumn[] = [
     { key: 'id', label: 'ID' },
     {
       key: 'customer_id',
-      label: 'Zakaznik',
+      label: 'Zákazník',
       render: (row: Contract) => customerMap[row.customer_id] ?? row.customer_id,
     },
     {
@@ -84,7 +84,7 @@ export function ContractsList() {
           <h1 className="text-2xl font-bold text-gray-900">Smlouvy</h1>
           <p className="text-sm text-gray-500 mt-1">{contracts.length} smluv</p>
         </div>
-        <PrimaryButton onClick={() => showError('Formular pro novou smlouvu neni v prototypu k dispozici')}>
+        <PrimaryButton onClick={() => showError('Formulář pro novou smlouvu není v prototypu k dispozici')}>
           Nova smlouva
         </PrimaryButton>
       </div>
@@ -93,7 +93,7 @@ export function ContractsList() {
         columns={columns}
         data={contracts}
         onRowClick={(row) => navigate(`/contracts/${row.id}`)}
-        emptyMessage="Zadne smlouvy."
+        emptyMessage="Žádné smlouvy."
       />
     </div>
   );

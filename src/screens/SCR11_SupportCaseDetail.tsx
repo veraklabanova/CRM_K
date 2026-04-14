@@ -58,7 +58,7 @@ export function SupportCaseDetail() {
     } catch (err: any) {
       if (err?.status === 404) setState('empty');
       else {
-        showError('Chyba pri nacitani pripadu');
+        showError('Chyba při načítání případů');
         setState('error');
       }
     }
@@ -92,12 +92,12 @@ export function SupportCaseDetail() {
           showSuccess('Pripad eskalovan');
           break;
         case 'sla_exception':
-          showSuccess('Zadost o SLA vyjimku odeslana (simulace)');
+          showSuccess('Žádost o SLA výjimku odeslána (simulace)');
           setModal({ open: false, action: '', title: '', message: '' });
           setActing(false);
           return;
         case 'verbal_promise':
-          showSuccess('Ustni prislib zaznamenan (simulace)');
+          showSuccess('Ústní příslib zaznamenán (simulace)');
           setModal({ open: false, action: '', title: '', message: '' });
           setActing(false);
           return;
@@ -106,16 +106,16 @@ export function SupportCaseDetail() {
       }
       setSupportCase(updated);
     } catch (err: any) {
-      showError(err?.message ?? 'Chyba pri akci');
+      showError(err?.message ?? 'Chyba při akci');
     } finally {
       setActing(false);
       setModal({ open: false, action: '', title: '', message: '' });
     }
   };
 
-  if (state === 'loading') return <LoadingSpinner size="lg" message="Nacitani pripadu..." />;
-  if (state === 'empty') return <div className="text-center py-12 text-gray-500">Pripad nenalezen.</div>;
-  if (state === 'error') return <div className="text-center py-12 text-red-600">Chyba pri nacitani dat.</div>;
+  if (state === 'loading') return <LoadingSpinner size="lg" message="Načítání pripadu..." />;
+  if (state === 'empty') return <div className="text-center py-12 text-gray-500">Případ nenalezen.</div>;
+  if (state === 'error') return <div className="text-center py-12 text-red-600">Chyba při načítání dat.</div>;
   if (!supportCase) return null;
 
   const isOverdue = supportCase.sla_deadline && new Date(supportCase.sla_deadline).getTime() < Date.now();
@@ -137,11 +137,11 @@ export function SupportCaseDetail() {
             )}
           </div>
         </div>
-        <SecondaryButton onClick={() => navigate('/support-cases')}>Zpet na seznam</SecondaryButton>
+        <SecondaryButton onClick={() => navigate('/support-cases')}>Zpět na seznam</SecondaryButton>
       </div>
 
       {isOverdue && !isClosed && (
-        <WarningBanner message="SLA deadline byl prekrocen! Vyzaduje okamzitou pozornost." />
+        <WarningBanner message="SLA deadline byl překročen! Vyžaduje okamžitou pozornost." />
       )}
 
       {/* SLA Countdown */}
@@ -173,7 +173,7 @@ export function SupportCaseDetail() {
             <dd className="mt-1 text-sm text-gray-900 whitespace-pre-wrap">{supportCase.description}</dd>
           </div>
           <div>
-            <dt className="text-sm font-medium text-gray-500">Zakaznik</dt>
+            <dt className="text-sm font-medium text-gray-500">Zákazník</dt>
             <dd className="mt-1 text-sm text-gray-900">
               <button
                 onClick={() => navigate(`/customers/${supportCase.customer_id}`)}
@@ -196,7 +196,7 @@ export function SupportCaseDetail() {
             <dd className="mt-1 text-sm text-gray-900">L{supportCase.escalation_level}</dd>
           </div>
           <div>
-            <dt className="text-sm font-medium text-gray-500">Prirazeny agent</dt>
+            <dt className="text-sm font-medium text-gray-500">Přiřazený agent</dt>
             <dd className="mt-1 text-sm text-gray-900">{supportCase.assigned_agent_id ?? '--'}</dd>
           </div>
           <div>
@@ -216,8 +216,8 @@ export function SupportCaseDetail() {
                 setModal({
                   open: true,
                   action: 'resolve',
-                  title: 'Vyresit pripad',
-                  message: 'Opravdu chcete oznacit tento pripad jako vyreseny?',
+                  title: 'Vyřešit případ',
+                  message: 'Opravdu chcete označit tento případ jako vyřešený?',
                 })
               }
               disabled={acting}
@@ -232,7 +232,7 @@ export function SupportCaseDetail() {
                   open: true,
                   action: 'escalate',
                   title: 'Eskalovat',
-                  message: `Eskalovat na uroven L${supportCase.escalation_level + 1}?`,
+                  message: `Eskalovat na úroveň L${supportCase.escalation_level + 1}?`,
                 })
               }
               disabled={acting || supportCase.escalation_level >= 3}
@@ -245,13 +245,13 @@ export function SupportCaseDetail() {
                 setModal({
                   open: true,
                   action: 'sla_exception',
-                  title: 'SLA vyjimka',
-                  message: 'Odeslat zadost o SLA vyjimku?',
+                  title: 'SLA výjimka',
+                  message: 'Odeslat žádost o SLA výjimku?',
                 })
               }
               disabled={acting}
             >
-              SLA vyjimka
+              SLA výjimka
             </SecondaryButton>
 
             <SecondaryButton
@@ -260,7 +260,7 @@ export function SupportCaseDetail() {
                   open: true,
                   action: 'verbal_promise',
                   title: 'Ustni prislib',
-                  message: 'Zaznamenat ustni prislib zakaznikovi?',
+                  message: 'Zaznamenat ústní příslib zákazníkovi?',
                 })
               }
               disabled={acting}

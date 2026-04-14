@@ -115,12 +115,12 @@ const DecisionPanel: React.FC<DecisionPanelProps> = ({
     if (!variant) return;
 
     if (justification.trim().length < 20) {
-      showError('Zduvodneni musi mit alespon 20 znaku.');
+      showError('Zdůvodnění musí mít alespoň 20 znaků.');
       return;
     }
 
     if (!canResolve(conflictId)) {
-      showError('Guardrail: Tento konflikt jiz byl vyresen. Opakované reseni neni povoleno.');
+      showError('Guardrail: Tento konflikt již byl vyřešen. Opakované řešení není povoleno.');
       return;
     }
 
@@ -133,16 +133,16 @@ const DecisionPanel: React.FC<DecisionPanelProps> = ({
       chosenVariant: variant.id,
       chosenVariantLabel: variant.label,
       decidedBy: currentUser.name,
-      justification: justification.trim() + (auditNote.trim() ? ` [Poznamka: ${auditNote.trim()}]` : ''),
+      justification: justification.trim() + (auditNote.trim() ? ` [Poznámka: ${auditNote.trim()}]` : ''),
     });
 
     if (record && record.guardrailCheck === 'blocked') {
-      showError('Guardrail: Tento konflikt jiz byl vyresen. Rozhodnuti zaznamenano jako blokovane.');
+      showError('Guardrail: Tento konflikt již byl vyřešen. Rozhodnutí zaznamenáno jako blokované.');
       return;
     }
 
     if (record) {
-      showSuccess(`Rozhodnuti ${record.id} ulozeno.`);
+      showSuccess(`Rozhodnutí ${record.id} uloženo.`);
       onDecisionMade?.(record);
       onClose();
     }
@@ -171,13 +171,13 @@ const DecisionPanel: React.FC<DecisionPanelProps> = ({
         <div className="bg-white rounded-xl shadow-2xl p-6 max-w-md w-full mx-4">
           <h2 className="text-lg font-semibold text-gray-900 mb-2">Strategie nenalezena</h2>
           <p className="text-sm text-gray-600 mb-4">
-            Pro typ konfliktu <strong>{conflictType}</strong> nebyla nalezena rozhodovaci strategie.
+            Pro typ konfliktu <strong>{conflictType}</strong> nebyla nalezena rozhodovací strategie.
           </p>
           <button
             onClick={onClose}
             className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 text-sm font-medium"
           >
-            Zavrit
+            Zavřít
           </button>
         </div>
       </div>
@@ -206,7 +206,7 @@ const DecisionPanel: React.FC<DecisionPanelProps> = ({
             <button
               onClick={onClose}
               className="text-gray-400 hover:text-gray-600"
-              aria-label="Zavrit"
+              aria-label="Zavřít"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -251,14 +251,14 @@ const DecisionPanel: React.FC<DecisionPanelProps> = ({
           {/* Escalation path */}
           {strategy.escalationPath.length > 0 && (
             <div className="text-xs text-gray-500">
-              <span className="font-medium">Eskalacni cesta:</span>{' '}
+              <span className="font-medium">Eskalační cesta:</span>{' '}
               {strategy.escalationPath.join(' \u2192 ')}
             </div>
           )}
 
           {/* Variants */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-700 mb-2">Varianty rozhodnuti</h3>
+            <h3 className="text-sm font-semibold text-gray-700 mb-2">Varianty rozhodnutí</h3>
             <div className="space-y-2">
               {strategy.variants.map((variant: DecisionVariant) => (
                 <label
@@ -283,7 +283,7 @@ const DecisionPanel: React.FC<DecisionPanelProps> = ({
                         <span className="text-sm font-medium text-gray-900">{variant.label}</span>
                         {variant.recommended && (
                           <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-green-100 text-green-800">
-                            Doporuceno
+                            Doporučeno
                           </span>
                         )}
                       </div>
@@ -305,21 +305,21 @@ const DecisionPanel: React.FC<DecisionPanelProps> = ({
 
           {/* Fallback info */}
           <div className="text-xs text-amber-700 bg-amber-50 rounded-lg p-3">
-            <span className="font-medium">Fallback pri vyprseni SLA:</span>{' '}
+            <span className="font-medium">Fallback při vypršení SLA:</span>{' '}
             {strategy.fallbackIfTimeout}
           </div>
 
           {/* Justification */}
           <div>
             <label htmlFor="dp-justification" className="block text-sm font-semibold text-gray-700 mb-1">
-              Zduvodneni rozhodnuti <span className="text-red-500">*</span>
+              Zdůvodnění rozhodnutí <span className="text-red-500">*</span>
             </label>
             <textarea
               id="dp-justification"
               rows={3}
               value={justification}
               onChange={(e) => setJustification(e.target.value)}
-              placeholder="Minimalne 20 znaku..."
+              placeholder="Minimálně 20 znaků..."
               className={`w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none ${
                 justification.length > 0 && justification.trim().length < 20
                   ? 'border-red-300 focus:ring-red-500'
@@ -334,14 +334,14 @@ const DecisionPanel: React.FC<DecisionPanelProps> = ({
           {/* Audit note */}
           <div>
             <label htmlFor="dp-audit-note" className="block text-sm font-medium text-gray-600 mb-1">
-              Auditni poznamka <span className="text-gray-400">(volitelna)</span>
+              Auditní poznámka <span className="text-gray-400">(volitelná)</span>
             </label>
             <textarea
               id="dp-audit-note"
               rows={2}
               value={auditNote}
               onChange={(e) => setAuditNote(e.target.value)}
-              placeholder="Doplnujici informace pro audit..."
+              placeholder="Doplňující informace pro audit..."
               className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
             />
           </div>
@@ -353,7 +353,7 @@ const DecisionPanel: React.FC<DecisionPanelProps> = ({
             onClick={onClose}
             className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 text-sm font-medium transition-colors"
           >
-            Zrusit
+            Zrušit
           </button>
           <button
             onClick={handleConfirm}
@@ -364,7 +364,7 @@ const DecisionPanel: React.FC<DecisionPanelProps> = ({
                 : 'bg-gray-200 text-gray-400 cursor-not-allowed'
             }`}
           >
-            Potvrdit rozhodnuti
+            Potvrdit rozhodnutí
           </button>
         </div>
       </div>

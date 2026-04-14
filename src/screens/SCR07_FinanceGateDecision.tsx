@@ -47,7 +47,7 @@ export function FinanceGateDecision() {
         if (cancelled) return;
         if (err?.status === 404) setState('empty');
         else {
-          showError('Chyba pri nacitani');
+          showError('Chyba při načítání');
           setState('error');
         }
       });
@@ -61,11 +61,11 @@ export function FinanceGateDecision() {
     if (!id || !opp) return;
 
     if (justification.trim().length < 10) {
-      setJustError('Zduvodneni musi mit alespon 10 znaku');
+      setJustError('Zdůvodnění musí mít alespoň 10 znaků');
       return;
     }
     if (!decision) {
-      showError('Vyberte rozhodnuti');
+      showError('Vyberte rozhodnutí');
       return;
     }
 
@@ -86,28 +86,28 @@ export function FinanceGateDecision() {
           : 'Finance gate potvrzen — obchod zamitnut',
       );
     } catch (err: any) {
-      showError(err?.message ?? 'Chyba pri ukladani rozhodnuti');
+      showError(err?.message ?? 'Chyba při ukládání rozhodnutí');
     } finally {
       setSubmitting(false);
     }
   };
 
-  if (state === 'loading') return <LoadingSpinner size="lg" message="Nacitani..." />;
-  if (state === 'empty') return <div className="text-center py-12 text-gray-500">Prilezitost nenalezena.</div>;
-  if (state === 'error') return <div className="text-center py-12 text-red-600">Chyba pri nacitani dat.</div>;
+  if (state === 'loading') return <LoadingSpinner size="lg" message="Načítání..." />;
+  if (state === 'empty') return <div className="text-center py-12 text-gray-500">Příležitost nenalezena.</div>;
+  if (state === 'error') return <div className="text-center py-12 text-red-600">Chyba při načítání dat.</div>;
   if (!opp) return null;
 
   if (state === 'success') {
     return (
       <div className="max-w-2xl space-y-6">
         <div className="bg-green-50 border border-green-200 rounded-lg p-6 text-center">
-          <h2 className="text-xl font-bold text-green-800 mb-2">Rozhodnuti ulozeno</h2>
+          <h2 className="text-xl font-bold text-green-800 mb-2">Rozhodnutí uloženo</h2>
           <p className="text-sm text-green-700">
             Obchod {opp.opportunity_name} — status: <StatusBadge status={opp.status} />
           </p>
         </div>
         <SecondaryButton onClick={() => navigate('/finance-reviews')}>
-          Zpet na Finance Review
+          Zpět na Finance Review
         </SecondaryButton>
       </div>
     );
@@ -119,16 +119,16 @@ export function FinanceGateDecision() {
     <div className="space-y-6 max-w-2xl">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-900">Finance Gate Decision</h1>
-        <SecondaryButton onClick={() => navigate('/finance-reviews')}>Zpet</SecondaryButton>
+        <SecondaryButton onClick={() => navigate('/finance-reviews')}>Zpět</SecondaryButton>
       </div>
 
       {!isInReview && (
-        <WarningBanner message={`Tato prilezitost neni ve stavu finance_review (aktualni: ${opp.status}).`} />
+        <WarningBanner message={`Tato příležitost není ve stavu finance_review (aktuální: ${opp.status}).`} />
       )}
 
       {/* Opportunity Summary */}
       <div className="bg-white rounded-lg border border-gray-200 p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Detail prilezitosti</h2>
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">Detail příležitosti</h2>
         <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
           <div>
             <dt className="text-sm font-medium text-gray-500">Nazev</dt>
@@ -139,7 +139,7 @@ export function FinanceGateDecision() {
             <dd className="text-sm text-gray-900 font-semibold">{opp.value_eur.toLocaleString('cs-CZ')} EUR</dd>
           </div>
           <div>
-            <dt className="text-sm font-medium text-gray-500">Zakaznik</dt>
+            <dt className="text-sm font-medium text-gray-500">Zákazník</dt>
             <dd className="text-sm text-gray-900">{customer?.legal_name ?? opp.customer_id}</dd>
           </div>
           <div>
@@ -160,10 +160,10 @@ export function FinanceGateDecision() {
       {/* Customer Finance Summary */}
       {customer && (
         <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-3">Financni souhrn zakaznika</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">Finanční souhrn zákazníka</h2>
           <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
             <div>
-              <dt className="text-sm font-medium text-gray-500">Zakaznik</dt>
+              <dt className="text-sm font-medium text-gray-500">Zákazník</dt>
               <dd className="text-sm text-gray-900">{customer.legal_name}</dd>
             </div>
             <div>
@@ -188,19 +188,19 @@ export function FinanceGateDecision() {
           <h2 className="text-lg font-semibold text-gray-900">Rozhodnuti</h2>
 
           <SelectInput
-            label="Rozhodnuti"
+            label="Rozhodnutí"
             value={decision}
             onChange={setDecision}
             options={[
               { value: 'release', label: 'Uvolnit (release) — obchod pokracuje' },
               { value: 'maintain_block', label: 'Udrzet blokaci — obchod zamitnut' },
             ]}
-            placeholder="Vyberte rozhodnuti..."
+            placeholder="Vyberte rozhodnutí..."
             required
           />
 
           <TextInput
-            label="Zduvodneni"
+            label="Zdůvodnění"
             value={justification}
             onChange={(v) => {
               setJustification(v);
@@ -214,9 +214,9 @@ export function FinanceGateDecision() {
 
           <div className="flex gap-3 pt-2">
             <PrimaryButton onClick={handleSubmit} loading={submitting} disabled={submitting}>
-              Potvrdit rozhodnuti
+              Potvrdit rozhodnutí
             </PrimaryButton>
-            <SecondaryButton onClick={() => navigate('/finance-reviews')}>Zrusit</SecondaryButton>
+            <SecondaryButton onClick={() => navigate('/finance-reviews')}>Zrušit</SecondaryButton>
           </div>
         </div>
       )}

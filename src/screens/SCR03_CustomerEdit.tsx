@@ -62,7 +62,7 @@ export function CustomerEdit() {
       })
       .catch(() => {
         if (cancelled) return;
-        showError('Chyba pri nacitani zakaznika');
+        showError('Chyba při načítání zákazníka');
         setState('error');
       });
 
@@ -87,7 +87,7 @@ export function CustomerEdit() {
         },
         original.version,
       );
-      showSuccess('Zakaznik uspesne ulozen');
+      showSuccess('Zákazník úspěšně uložen');
       navigate(`/customers/${id}`);
     } catch (err: any) {
       if (err?.status === 409) {
@@ -97,10 +97,10 @@ export function CustomerEdit() {
           setServerVersion(freshCustomer);
           setState('conflict');
         } catch {
-          showError('Nelze nacist aktualni data ze serveru');
+          showError('Nelze načíst aktuální data ze serveru');
         }
       } else {
-        showError(err?.message ?? 'Chyba pri ukladani');
+        showError(err?.message ?? 'Chyba při ukládání');
       }
     } finally {
       setSaving(false);
@@ -122,10 +122,10 @@ export function CustomerEdit() {
         },
         serverVersion.version,
       );
-      showSuccess('Zakaznik uspesne ulozen (vase zmeny)');
+      showSuccess('Zákazník úspěšně uložen (vaše změny)');
       navigate(`/customers/${id}`);
     } catch (err: any) {
-      showError(err?.message ?? 'Chyba pri ukladani');
+      showError(err?.message ?? 'Chyba při ukládání');
     } finally {
       setSaving(false);
     }
@@ -140,15 +140,15 @@ export function CustomerEdit() {
     setOwningAm(serverVersion.owning_account_manager_id);
     setServerVersion(null);
     setState('default');
-    showSuccess('Nacteny aktualni data ze serveru');
+    showSuccess('Načteny aktuální data ze serveru');
   };
 
-  if (state === 'loading') return <LoadingSpinner size="lg" message="Nacitani formulare..." />;
+  if (state === 'loading') return <LoadingSpinner size="lg" message="Načítání formuláře..." />;
   if (state === 'error')
-    return <div className="text-center py-12 text-red-600">Chyba pri nacitani dat.</div>;
+    return <div className="text-center py-12 text-red-600">Chyba při načítání dat.</div>;
 
   const FIELD_LABELS: Record<string, string> = {
-    legal_name: 'Pravni nazev',
+    legal_name: 'Právní název',
     vat_id: 'VAT ID',
     primary_region: 'Region',
     owning_account_manager_id: 'Account Manager',
@@ -157,14 +157,14 @@ export function CustomerEdit() {
   return (
     <div className="space-y-6 max-w-2xl">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">Editace zakaznika</h1>
-        <SecondaryButton onClick={() => navigate(`/customers/${id}`)}>Zrusit</SecondaryButton>
+        <h1 className="text-2xl font-bold text-gray-900">Editace zákazníka</h1>
+        <SecondaryButton onClick={() => navigate(`/customers/${id}`)}>Zrušit</SecondaryButton>
       </div>
 
       {state === 'conflict' && serverVersion && (
         <div className="space-y-4">
           <div className="p-4 bg-amber-50 border border-amber-300 rounded-lg text-amber-800 text-sm font-medium">
-            Konflikt verzi! Zakaznik byl zmenen jinym uzivatelem. Porovnejte zmeny a rozhodnete.
+            Konflikt verzí! Zákazník byl změněn jiným uživatelem. Porovnejte změny a rozhodněte.
           </div>
           <MergeDiffPanel
             myChanges={{
@@ -189,14 +189,14 @@ export function CustomerEdit() {
       {state === 'default' && (
         <div className="bg-white rounded-lg border border-gray-200 p-6 space-y-5">
           <TextInput
-            label="Pravni nazev"
+            label="Právní název"
             value={legalName}
             onChange={setLegalName}
             required
           />
           <TextInput label="VAT ID" value={vatId} onChange={setVatId} required />
           <SelectInput
-            label="Primarni region"
+            label="Primární region"
             value={primaryRegion}
             onChange={setPrimaryRegion}
             options={REGION_OPTIONS}
@@ -212,10 +212,10 @@ export function CustomerEdit() {
 
           <div className="flex gap-3 pt-4">
             <PrimaryButton onClick={handleSave} loading={saving}>
-              Ulozit
+              Uložit
             </PrimaryButton>
             <SecondaryButton onClick={() => navigate(`/customers/${id}`)}>
-              Zrusit
+              Zrušit
             </SecondaryButton>
           </div>
         </div>

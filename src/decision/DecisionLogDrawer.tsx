@@ -110,17 +110,17 @@ function DecisionCard({ record }: { record: DecisionRecord }) {
       {expanded && (
         <div className="mt-3 pt-3 border-t border-gray-100 space-y-1.5 text-xs text-gray-600">
           <div>
-            <span className="font-medium text-gray-700">Zvolena varianta:</span>{' '}
+            <span className="font-medium text-gray-700">Zvolená varianta:</span>{' '}
             {record.chosenVariantLabel}
           </div>
           <div>
             <span className="font-medium text-gray-700">Rozhodl:</span> {record.decidedBy}
           </div>
           <div>
-            <span className="font-medium text-gray-700">Zduvodneni:</span> {record.justification}
+            <span className="font-medium text-gray-700">Zdůvodnění:</span> {record.justification}
           </div>
           <div>
-            <span className="font-medium text-gray-700">Cas:</span> {formatTimestamp(record.timestamp)}
+            <span className="font-medium text-gray-700">Čas:</span> {formatTimestamp(record.timestamp)}
           </div>
           <div>
             <span className="font-medium text-gray-700">KCS:</span>{' '}
@@ -179,8 +179,8 @@ function StrategicInsightsTab() {
         <svg className="w-10 h-10 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
         </svg>
-        <p className="text-sm">Zatim zadne patterny</p>
-        <p className="text-xs mt-1">Patterny se objevi po vice rozhodnutich.</p>
+        <p className="text-sm">Zatím žádné patterny</p>
+        <p className="text-xs mt-1">Patterny se objeví po více rozhodnutích.</p>
       </div>
     );
   }
@@ -188,8 +188,8 @@ function StrategicInsightsTab() {
   return (
     <div className="space-y-3">
       <p className="text-xs text-gray-500">
-        Patterny se identifikuji pri opakovanych rozhodnutich. Pokud se stejna kombinace typ+varianta
-        objevi 3x a vice, stava se kandidatem na zmenu procesu.
+        Patterny se identifikují při opakovaných rozhodnutích. Pokud se stejná kombinace typ+varianta
+        objeví 3x a více, stává se kandidátem na změnu procesu.
       </p>
 
       <div className="overflow-x-auto">
@@ -197,7 +197,7 @@ function StrategicInsightsTab() {
           <thead>
             <tr className="border-b border-gray-200">
               <th className="text-left py-2 pr-3 font-semibold text-gray-700">Pattern</th>
-              <th className="text-center py-2 px-3 font-semibold text-gray-700">Pocet</th>
+              <th className="text-center py-2 px-3 font-semibold text-gray-700">Počet</th>
               <th className="text-center py-2 px-3 font-semibold text-gray-700">Status</th>
               <th className="text-right py-2 pl-3 font-semibold text-gray-700">Akce</th>
             </tr>
@@ -236,7 +236,7 @@ function StrategicInsightsTab() {
                       Change Candidate
                     </span>
                   ) : (
-                    <span className="text-gray-400">Sledovano</span>
+                    <span className="text-gray-400">Sledováno</span>
                   )}
                 </td>
                 <td className="text-right py-2 pl-3">
@@ -250,7 +250,7 @@ function StrategicInsightsTab() {
                           <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                           </svg>
-                          Kopirovano
+                          Kopírováno
                         </>
                       ) : (
                         <>
@@ -304,7 +304,7 @@ const DecisionLogDrawer: React.FC<DecisionLogDrawerProps> = ({ isOpen, onClose }
             <button
               onClick={onClose}
               className="text-gray-400 hover:text-gray-600"
-              aria-label="Zavrit"
+              aria-label="Zavřít"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -322,7 +322,7 @@ const DecisionLogDrawer: React.FC<DecisionLogDrawerProps> = ({ isOpen, onClose }
                   : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
               }`}
             >
-              Rozhodnuti
+              Rozhodnutí
               {decisions.length > 0 && (
                 <span className="ml-1.5 inline-flex items-center justify-center w-4 h-4 rounded-full bg-white/20 text-[10px]">
                   {decisions.length}
@@ -352,8 +352,8 @@ const DecisionLogDrawer: React.FC<DecisionLogDrawerProps> = ({ isOpen, onClose }
                   <svg className="w-10 h-10 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                   </svg>
-                  <p className="text-sm">Zatim zadna rozhodnuti</p>
-                  <p className="text-xs mt-1">Rozhodnuti se objevi po vyreseni konfliktu.</p>
+                  <p className="text-sm">Zatím žádná rozhodnutí</p>
+                  <p className="text-xs mt-1">Rozhodnutí se objeví po vyřešení konfliktu.</p>
                 </div>
               ) : (
                 <div className="space-y-2">

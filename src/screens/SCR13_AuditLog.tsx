@@ -17,9 +17,9 @@ import type { AuditRecord, EntityType } from '../data/types';
 
 const ENTITY_TYPE_OPTIONS = [
   { value: '', label: 'Vse' },
-  { value: 'customer', label: 'Zakaznik' },
+  { value: 'customer', label: 'Zákazník' },
   { value: 'contact', label: 'Kontakt' },
-  { value: 'opportunity', label: 'Prilezitost' },
+  { value: 'opportunity', label: 'Příležitost' },
   { value: 'contract', label: 'Smlouva' },
   { value: 'support_case', label: 'Podpora' },
   { value: 'conflict', label: 'Konflikt' },
@@ -49,7 +49,7 @@ export function AuditLog() {
       setRecords(data);
       setState('default');
     } catch {
-      showError('Chyba pri nacitani audit logu');
+      showError('Chyba při načítání audit logu');
       setState('error');
     }
   }, [entityType, dateFrom, dateTo, showError]);
@@ -81,7 +81,7 @@ export function AuditLog() {
 
       showSuccess('CSV export uspesne stazen');
     } catch {
-      showError('Chyba pri exportu CSV');
+      showError('Chyba při exportu CSV');
     } finally {
       setExporting(false);
     }
@@ -100,7 +100,7 @@ export function AuditLog() {
     { key: 'actor_role', label: 'Role' },
     {
       key: 'justification',
-      label: 'Zduvodneni',
+      label: 'Zdůvodnění',
       render: (row: AuditRecord) =>
         row.justification ? (
           <span title={row.justification} className="truncate max-w-[200px] block">
@@ -152,16 +152,16 @@ export function AuditLog() {
 
       {/* Results */}
       {state === 'loading' ? (
-        <LoadingSpinner message="Nacitani audit zaznamu..." />
+        <LoadingSpinner message="Načítání audit zaznamu..." />
       ) : state === 'error' ? (
-        <div className="text-center py-12 text-red-600">Chyba pri nacitani dat.</div>
+        <div className="text-center py-12 text-red-600">Chyba při načítání dat.</div>
       ) : (
         <>
-          <p className="text-sm text-gray-500">{records.length} zaznamu</p>
+          <p className="text-sm text-gray-500">{records.length} záznamů</p>
           <DataTable
             columns={columns}
             data={records}
-            emptyMessage="Zadne audit zaznamy odpovidajici filtrum."
+            emptyMessage="Žádné audit záznamy odpovídající filtrům."
           />
         </>
       )}

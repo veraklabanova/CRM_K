@@ -50,7 +50,7 @@ export function SupportCasesList() {
       })
       .catch(() => {
         if (cancelled) return;
-        showError('Chyba pri nacitani pripadu podpory');
+        showError('Chyba při načítání pripadu podpory');
         setState('error');
       });
 
@@ -59,16 +59,16 @@ export function SupportCasesList() {
     };
   }, [showError]);
 
-  if (state === 'loading') return <LoadingSpinner size="lg" message="Nacitani pripadu..." />;
+  if (state === 'loading') return <LoadingSpinner size="lg" message="Načítání pripadu..." />;
   if (state === 'error')
-    return <div className="text-center py-12 text-red-600">Chyba pri nacitani dat.</div>;
+    return <div className="text-center py-12 text-red-600">Chyba při načítání dat.</div>;
 
   const columns: DataTableColumn[] = [
     { key: 'id', label: 'ID' },
-    { key: 'subject', label: 'Predmet' },
+    { key: 'subject', label: 'Předmět' },
     {
       key: 'customer_id',
-      label: 'Zakaznik',
+      label: 'Zákazník',
       render: (row: SupportCase) => customerMap[row.customer_id] ?? row.customer_id,
     },
     {
@@ -124,7 +124,7 @@ export function SupportCasesList() {
         columns={columns}
         data={cases}
         onRowClick={(row) => navigate(`/support-cases/${row.id}`)}
-        emptyMessage="Zadne pripady podpory."
+        emptyMessage="Žádné případy podpory."
       />
     </div>
   );

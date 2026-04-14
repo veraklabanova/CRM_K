@@ -71,7 +71,7 @@ export function Dashboard() {
       })
       .catch((err) => {
         if (cancelled) return;
-        showError('Chyba pri nacitani dashboardu');
+        showError('Chyba při načítání dashboardu');
         console.error('Dashboard load error', err);
         setState('error');
       });
@@ -82,13 +82,13 @@ export function Dashboard() {
   }, [showError]);
 
   if (state === 'loading') {
-    return <LoadingSpinner size="lg" message="Nacitani dashboardu..." />;
+    return <LoadingSpinner size="lg" message="Načítání dashboardu..." />;
   }
 
   if (state === 'error') {
     return (
       <div className="text-center py-12 text-red-600">
-        Chyba pri nacitani dat. Zkuste obnovit stranku.
+        Chyba při načítání dat. Zkuste obnovit stránku.
       </div>
     );
   }
@@ -107,7 +107,7 @@ export function Dashboard() {
       variant: 'info',
       path: '/pipeline',
       screenId: 'SCR-04',
-      description: 'Aktivnich prilezitosti',
+      description: 'Aktivních příležitostí',
     },
     {
       label: 'Finance Review',
@@ -115,7 +115,7 @@ export function Dashboard() {
       variant: 'warning',
       path: '/finance-reviews',
       screenId: 'SCR-06',
-      description: 'Ceka na schvaleni',
+      description: 'Čeká na schválení',
     },
     {
       label: 'Podpora',
@@ -123,15 +123,15 @@ export function Dashboard() {
       variant: 'info',
       path: '/support-cases',
       screenId: 'SCR-10',
-      description: 'Otevrenych pripadu',
+      description: 'Otevřených případů',
     },
     {
-      label: 'Eskalovane pripady',
+      label: 'Eskalované případy',
       count: counts.escalatedCases,
       variant: 'danger',
       path: '/support-cases',
       screenId: 'SCR-10',
-      description: 'Vyzaduje pozornost',
+      description: 'Vyžaduje pozornost',
     },
     {
       label: 'Konflikty',
@@ -139,15 +139,15 @@ export function Dashboard() {
       variant: 'warning',
       path: '/conflicts',
       screenId: 'SCR-12',
-      description: 'Ceka na rozhodnuti',
+      description: 'Čeká na rozhodnutí',
     },
     {
-      label: 'Zakaznici',
+      label: 'Zákazníci',
       count: counts.customers,
       variant: 'success',
       path: '/customers/CUS-001',
       screenId: 'SCR-02',
-      description: 'Celkem v systemu',
+      description: 'Celkem v systému',
     },
   ];
 
@@ -158,7 +158,7 @@ export function Dashboard() {
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
         <p className="text-sm text-gray-500 mt-1">
-          Prehled pro roli: <span className="font-medium text-gray-700">{currentRole}</span>
+          Přehled pro roli: <span className="font-medium text-gray-700">{currentRole}</span>
         </p>
       </div>
 
@@ -183,7 +183,7 @@ export function Dashboard() {
 
       {visibleWidgets.length === 0 && (
         <div className="text-center py-12 text-gray-500">
-          Pro vasi roli nejsou k dispozici zadne widgety.
+          Pro vaši roli nejsou k dispozici žádné widgety.
         </div>
       )}
     </div>

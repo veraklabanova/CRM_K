@@ -41,7 +41,7 @@ export function PipelineOverview() {
       })
       .catch(() => {
         if (cancelled) return;
-        showError('Chyba pri nacitani pipeline');
+        showError('Chyba při načítání pipeline');
         setState('error');
       });
 
@@ -50,15 +50,15 @@ export function PipelineOverview() {
     };
   }, [showError]);
 
-  if (state === 'loading') return <LoadingSpinner size="lg" message="Nacitani pipeline..." />;
+  if (state === 'loading') return <LoadingSpinner size="lg" message="Načítání pipeline..." />;
   if (state === 'error')
-    return <div className="text-center py-12 text-red-600">Chyba pri nacitani dat.</div>;
+    return <div className="text-center py-12 text-red-600">Chyba při načítání dat.</div>;
 
   const columns: DataTableColumn[] = [
-    { key: 'opportunity_name', label: 'Nazev' },
+    { key: 'opportunity_name', label: 'Název' },
     {
       key: 'customer_id',
-      label: 'Zakaznik',
+      label: 'Zákazník',
       render: (row: Opportunity) => customerMap[row.customer_id] ?? row.customer_id,
     },
     {
@@ -68,7 +68,7 @@ export function PipelineOverview() {
     },
     {
       key: 'probability',
-      label: 'Pravdepodobnost',
+      label: 'Pravděpodobnost',
       render: (row: Opportunity) => `${row.probability}%`,
     },
     {
@@ -76,7 +76,7 @@ export function PipelineOverview() {
       label: 'Status',
       render: (row: Opportunity) => <StatusBadge status={row.status} />,
     },
-    { key: 'expected_close_date', label: 'Ocekavane uzavreni' },
+    { key: 'expected_close_date', label: 'Očekávané uzavření' },
     { key: 'region', label: 'Region' },
   ];
 
@@ -85,11 +85,11 @@ export function PipelineOverview() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Pipeline</h1>
-          <p className="text-sm text-gray-500 mt-1">{opportunities.length} prilezitosti</p>
+          <p className="text-sm text-gray-500 mt-1">{opportunities.length} příležitostí</p>
         </div>
         {!readonly && (
-          <PrimaryButton onClick={() => showError('Formular pro novou prilezitost neni v prototypu k dispozici')}>
-            Nova prilezitost
+          <PrimaryButton onClick={() => showError('Formulář pro novou příležitost není v prototypu k dispozici')}>
+            Nová příležitost
           </PrimaryButton>
         )}
       </div>
@@ -98,7 +98,7 @@ export function PipelineOverview() {
         columns={columns}
         data={opportunities}
         onRowClick={(row) => navigate(`/opportunities/${row.id}`)}
-        emptyMessage="Zadne prilezitosti v pipeline."
+        emptyMessage="Žádné příležitosti v pipeline."
       />
     </div>
   );

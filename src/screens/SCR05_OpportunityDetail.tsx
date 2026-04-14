@@ -55,7 +55,7 @@ export function OpportunityDetail() {
     } catch (err: any) {
       if (err?.status === 404) setState('empty');
       else {
-        showError('Chyba pri nacitani prilezitosti');
+        showError('Chyba při načítání prilezitosti');
         setState('error');
       }
     }
@@ -73,7 +73,7 @@ export function OpportunityDetail() {
       setOpp(updated);
       showSuccess(`Status zmenen na ${newStatus}`);
     } catch (err: any) {
-      showError(err?.message ?? 'Chyba pri zmene statusu');
+      showError(err?.message ?? 'Chyba při změně statusu');
     } finally {
       setActing(false);
     }
@@ -86,12 +86,12 @@ export function OpportunityDetail() {
       const updated = await closeOpportunity(id);
       setOpp(updated);
       if (updated.status === 'finance_review') {
-        showError('Obchod byl presmerovan do Finance Review (finance gate)');
+        showError('Obchod byl přesměrován do Finance Review (finance gate)');
       } else {
         showSuccess('Obchod uspesne uzavren');
       }
     } catch (err: any) {
-      showError(err?.message ?? 'Chyba pri uzavirani obchodu');
+      showError(err?.message ?? 'Chyba při uzavírání obchodu');
     } finally {
       setActing(false);
       setConfirmModal({ open: false, action: '', title: '', message: '' });
@@ -106,16 +106,16 @@ export function OpportunityDetail() {
       setOpp(updated);
       showSuccess('Obchod oznacen jako ztraceny');
     } catch (err: any) {
-      showError(err?.message ?? 'Chyba pri zmene statusu');
+      showError(err?.message ?? 'Chyba při změně statusu');
     } finally {
       setActing(false);
       setConfirmModal({ open: false, action: '', title: '', message: '' });
     }
   };
 
-  if (state === 'loading') return <LoadingSpinner size="lg" message="Nacitani prilezitosti..." />;
-  if (state === 'empty') return <div className="text-center py-12 text-gray-500">Prilezitost nenalezena.</div>;
-  if (state === 'error') return <div className="text-center py-12 text-red-600">Chyba pri nacitani dat.</div>;
+  if (state === 'loading') return <LoadingSpinner size="lg" message="Načítání prilezitosti..." />;
+  if (state === 'empty') return <div className="text-center py-12 text-gray-500">Příležitost nenalezena.</div>;
+  if (state === 'error') return <div className="text-center py-12 text-red-600">Chyba při načítání dat.</div>;
   if (!opp) return null;
 
   const nextStatuses = STATUS_TRANSITIONS[opp.status] ?? [];
@@ -132,18 +132,18 @@ export function OpportunityDetail() {
             {isFinanceBlocked && <StatusBadge status="blocked" variant="danger" />}
           </div>
         </div>
-        <SecondaryButton onClick={() => navigate('/pipeline')}>Zpet na pipeline</SecondaryButton>
+        <SecondaryButton onClick={() => navigate('/pipeline')}>Zpět na pipeline</SecondaryButton>
       </div>
 
       {isFinanceBlocked && opp.status === 'finance_review' && (
-        <WarningBanner message="Tento obchod je blokovany Finance Gate. Ceka na schvaleni financnim oddelenim." />
+        <WarningBanner message="Tento obchod je blokovaný Finance Gate. Čeká na schválení finančním oddělením." />
       )}
 
       {/* Detail info */}
       <div className="bg-white rounded-lg border border-gray-200 p-6">
         <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
           <div>
-            <dt className="text-sm font-medium text-gray-500">Zakaznik</dt>
+            <dt className="text-sm font-medium text-gray-500">Zákazník</dt>
             <dd className="mt-1 text-sm text-gray-900">
               <button
                 onClick={() => navigate(`/customers/${opp.customer_id}`)}
@@ -164,7 +164,7 @@ export function OpportunityDetail() {
             <dd className="mt-1 text-sm text-gray-900">{opp.probability}%</dd>
           </div>
           <div>
-            <dt className="text-sm font-medium text-gray-500">Ocekavane uzavreni</dt>
+            <dt className="text-sm font-medium text-gray-500">Očekávané uzavření</dt>
             <dd className="mt-1 text-sm text-gray-900">{opp.expected_close_date}</dd>
           </div>
           <div>
@@ -210,8 +210,8 @@ export function OpportunityDetail() {
                   setConfirmModal({
                     open: true,
                     action: 'close',
-                    title: 'Uzavrit obchod',
-                    message: 'Opravdu chcete uzavrit tento obchod? Pokud ma zakaznik nesplacene pohledavky, bude obchod presmerovan do Finance Review.',
+                    title: 'Uzavřít obchod',
+                    message: 'Opravdu chcete uzavřít tento obchod? Pokud má zákazník nesplacené pohledávky, bude obchod přesměrován do Finance Review.',
                   })
                 }
                 loading={acting}
@@ -229,7 +229,7 @@ export function OpportunityDetail() {
                     open: true,
                     action: 'lost',
                     title: 'Oznacit jako ztraceny',
-                    message: 'Opravdu chcete oznacit tento obchod jako ztraceny?',
+                    message: 'Opravdu chcete označit tento obchod jako ztracený?',
                   })
                 }
                 disabled={acting}

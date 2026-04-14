@@ -64,7 +64,7 @@ export function Customer360() {
         if (err?.status === 404) {
           setState('empty');
         } else {
-          showError('Chyba pri nacitani zakaznika');
+          showError('Chyba při načítání zákazníka');
           setState('error');
         }
       });
@@ -74,34 +74,34 @@ export function Customer360() {
     };
   }, [id, showError]);
 
-  if (state === 'loading') return <LoadingSpinner size="lg" message="Nacitani zakaznika..." />;
+  if (state === 'loading') return <LoadingSpinner size="lg" message="Načítání zákazníka..." />;
   if (state === 'empty' || !customer)
-    return <div className="text-center py-12 text-gray-500">Zakaznik nenalezen.</div>;
+    return <div className="text-center py-12 text-gray-500">Zákazník nenalezen.</div>;
   if (state === 'error')
-    return <div className="text-center py-12 text-red-600">Chyba pri nacitani dat.</div>;
+    return <div className="text-center py-12 text-red-600">Chyba při načítání dat.</div>;
 
   const tabs: { key: TabKey; label: string; count?: number }[] = [
     { key: 'info', label: 'Informace' },
     { key: 'contacts', label: 'Kontakty', count: contacts.length },
-    { key: 'opportunities', label: 'Prilezitosti', count: opportunities.length },
+    { key: 'opportunities', label: 'Příležitosti', count: opportunities.length },
     { key: 'contracts', label: 'Smlouvy', count: contracts.length },
     { key: 'cases', label: 'Podpora', count: cases.length },
   ];
 
   const contactCols: DataTableColumn[] = [
-    { key: 'name', label: 'Jmeno' },
+    { key: 'name', label: 'Jméno' },
     { key: 'email', label: 'E-mail' },
     { key: 'phone', label: 'Telefon' },
     { key: 'role', label: 'Role' },
     {
       key: 'is_primary',
-      label: 'Primarni',
+      label: 'Primární',
       render: (row: Contact) => (row.is_primary ? <StatusBadge status="active" variant="success" /> : ''),
     },
   ];
 
   const oppCols: DataTableColumn[] = [
-    { key: 'opportunity_name', label: 'Nazev' },
+    { key: 'opportunity_name', label: 'Název' },
     {
       key: 'value_eur',
       label: 'Hodnota',
@@ -112,7 +112,7 @@ export function Customer360() {
       label: 'Status',
       render: (row: Opportunity) => <StatusBadge status={row.status} />,
     },
-    { key: 'expected_close_date', label: 'Ocekavane uzavreni' },
+    { key: 'expected_close_date', label: 'Očekávané uzavření' },
   ];
 
   const contractCols: DataTableColumn[] = [
@@ -129,7 +129,7 @@ export function Customer360() {
 
   const caseCols: DataTableColumn[] = [
     { key: 'id', label: 'ID' },
-    { key: 'subject', label: 'Predmet' },
+    { key: 'subject', label: 'Předmět' },
     {
       key: 'priority',
       label: 'Priorita',
@@ -190,7 +190,7 @@ export function Customer360() {
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
             <div>
-              <dt className="text-sm font-medium text-gray-500">Pravni nazev</dt>
+              <dt className="text-sm font-medium text-gray-500">Právní název</dt>
               <dd className="mt-1 text-sm text-gray-900">{customer.legal_name}</dd>
             </div>
             <div>
@@ -214,15 +214,15 @@ export function Customer360() {
               <dd className="mt-1 text-sm text-gray-900">v{customer.version}</dd>
             </div>
             <div className="sm:col-span-2">
-              <dt className="text-sm font-medium text-gray-500">Poznamky</dt>
-              <dd className="mt-1 text-sm text-gray-900">{customer.notes ?? 'Zadne poznamky'}</dd>
+              <dt className="text-sm font-medium text-gray-500">Poznámky</dt>
+              <dd className="mt-1 text-sm text-gray-900">{customer.notes ?? 'Žádné poznámky'}</dd>
             </div>
             <div>
-              <dt className="text-sm font-medium text-gray-500">Vytvoreno</dt>
+              <dt className="text-sm font-medium text-gray-500">Vytvořeno</dt>
               <dd className="mt-1 text-sm text-gray-900">{new Date(customer.created_at).toLocaleString('cs-CZ')}</dd>
             </div>
             <div>
-              <dt className="text-sm font-medium text-gray-500">Posledni uprava</dt>
+              <dt className="text-sm font-medium text-gray-500">Poslední úprava</dt>
               <dd className="mt-1 text-sm text-gray-900">{new Date(customer.updated_at).toLocaleString('cs-CZ')}</dd>
             </div>
           </dl>
@@ -230,7 +230,7 @@ export function Customer360() {
       )}
 
       {activeTab === 'contacts' && (
-        <DataTable columns={contactCols} data={contacts} emptyMessage="Zadne kontakty." />
+        <DataTable columns={contactCols} data={contacts} emptyMessage="Žádné kontakty." />
       )}
 
       {activeTab === 'opportunities' && (
@@ -238,7 +238,7 @@ export function Customer360() {
           columns={oppCols}
           data={opportunities}
           onRowClick={(row) => navigate(`/opportunities/${row.id}`)}
-          emptyMessage="Zadne prilezitosti."
+          emptyMessage="Žádné příležitosti."
         />
       )}
 
@@ -247,7 +247,7 @@ export function Customer360() {
           columns={contractCols}
           data={contracts}
           onRowClick={(row) => navigate(`/contracts/${row.id}`)}
-          emptyMessage="Zadne smlouvy."
+          emptyMessage="Žádné smlouvy."
         />
       )}
 
@@ -256,7 +256,7 @@ export function Customer360() {
           columns={caseCols}
           data={cases}
           onRowClick={(row) => navigate(`/support-cases/${row.id}`)}
-          emptyMessage="Zadne pripady podpory."
+          emptyMessage="Žádné případy podpory."
         />
       )}
     </div>

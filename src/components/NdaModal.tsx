@@ -9,9 +9,9 @@ import React, { useState, useEffect } from 'react';
 const NDA_KEY = 'nda_accepted';
 
 const NDA_TEXT = [
-  'Vitejte v interaktivnim prototypu projektu EnterpriseCRM.',
-  'Z duvodu NDA jsou data anonymizovana.',
-  'Vyuzijte prepinac v pravem hornim rohu a vyzkouset si cely pruchod aplikaci pod ruznymi uzivatelskymi rolemi.',
+  'Vítejte v interaktivním prototypu projektu EnterpriseCRM.',
+  'Z důvodu NDA jsou data anonymizována.',
+  'Využijte přepínač v pravém horním rohu a vyzkoušet si celý průchod aplikací pod různými uživatelskými rolemi.',
 ];
 
 const NdaModal: React.FC = () => {

@@ -25,7 +25,7 @@ interface NavItem {
 
 const NAV_ITEMS: NavItem[] = [
   { screenId: 'SCR-01', path: '/', label: 'Dashboard', icon: '\u{1F4CA}' },
-  { screenId: 'SCR-02', path: '/customers/CUS-001', label: 'Zakaznici', icon: '\u{1F465}' },
+  { screenId: 'SCR-02', path: '/customers/CUS-001', label: 'Zákazníci', icon: '\u{1F465}' },
   { screenId: 'SCR-04', path: '/pipeline', label: 'Pipeline', icon: '\u{1F4C8}' },
   { screenId: 'SCR-06', path: '/finance-reviews', label: 'Finance Review', icon: '\u{1F4B0}' },
   { screenId: 'SCR-08', path: '/contracts', label: 'Smlouvy', icon: '\u{1F4DD}' },
@@ -145,7 +145,7 @@ const AppLayout: React.FC = () => {
               onClick={startTour}
               className="px-3 py-1.5 text-sm font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors"
             >
-              Demo pruchod
+              Demo průchod
             </button>
 
             {/* Role switcher with pulsating dot */}
@@ -160,7 +160,7 @@ const AppLayout: React.FC = () => {
                     style={{ animation: 'pulse-dot 1.5s ease-in-out infinite' }}
                   />
                   <span className="absolute -left-3 top-1/2 -translate-y-1/2 translate-x-4 hidden group-hover:block whitespace-nowrap bg-gray-800 text-white text-xs rounded px-2 py-1 z-50">
-                    Prepnete roli
+                    Přepněte roli
                   </span>
                 </div>
               )}

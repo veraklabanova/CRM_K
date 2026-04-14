@@ -49,7 +49,7 @@ export function ContractDetail() {
     } catch (err: any) {
       if (err?.status === 404) setState('empty');
       else {
-        showError('Chyba pri nacitani smlouvy');
+        showError('Chyba při načítání smlouvy');
         setState('error');
       }
     }
@@ -67,7 +67,7 @@ export function ContractDetail() {
       switch (modal.action) {
         case 'submit_legal':
           updated = await submitToLegal(id);
-          showSuccess('Smlouva odeslana k pravnimu schvaleni');
+          showSuccess('Smlouva odeslána k právnímu schválení');
           break;
         case 'approve':
           updated = await approveContract(id);
@@ -82,16 +82,16 @@ export function ContractDetail() {
       }
       setContract(updated);
     } catch (err: any) {
-      showError(err?.message ?? 'Chyba pri akci');
+      showError(err?.message ?? 'Chyba při akci');
     } finally {
       setActing(false);
       setModal({ open: false, action: '', title: '', message: '' });
     }
   };
 
-  if (state === 'loading') return <LoadingSpinner size="lg" message="Nacitani smlouvy..." />;
+  if (state === 'loading') return <LoadingSpinner size="lg" message="Načítání smlouvy..." />;
   if (state === 'empty') return <div className="text-center py-12 text-gray-500">Smlouva nenalezena.</div>;
-  if (state === 'error') return <div className="text-center py-12 text-red-600">Chyba pri nacitani dat.</div>;
+  if (state === 'error') return <div className="text-center py-12 text-red-600">Chyba při načítání dat.</div>;
   if (!contract) return null;
 
   const isLegal = currentRole === 'Legal/Compliance';
@@ -109,14 +109,14 @@ export function ContractDetail() {
             <StatusBadge status={contract.approval_status} />
           </div>
         </div>
-        <SecondaryButton onClick={() => navigate('/contracts')}>Zpet na seznam</SecondaryButton>
+        <SecondaryButton onClick={() => navigate('/contracts')}>Zpět na seznam</SecondaryButton>
       </div>
 
       {/* Contract Detail */}
       <div className="bg-white rounded-lg border border-gray-200 p-6">
         <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
           <div>
-            <dt className="text-sm font-medium text-gray-500">Zakaznik</dt>
+            <dt className="text-sm font-medium text-gray-500">Zákazník</dt>
             <dd className="mt-1 text-sm text-gray-900">
               <button
                 onClick={() => navigate(`/customers/${contract.customer_id}`)}
@@ -155,7 +155,7 @@ export function ContractDetail() {
             <dd className="mt-1 text-sm text-gray-900">{contract.end_date}</dd>
           </div>
           <div className="sm:col-span-2">
-            <dt className="text-sm font-medium text-gray-500">Popis podminek</dt>
+            <dt className="text-sm font-medium text-gray-500">Popis podmínek</dt>
             <dd className="mt-1 text-sm text-gray-900">{contract.terms_description || '--'}</dd>
           </div>
           <div className="sm:col-span-2">
@@ -194,7 +194,7 @@ export function ContractDetail() {
                   open: true,
                   action: 'submit_legal',
                   title: 'Odeslat Legal',
-                  message: 'Opravdu chcete odeslat tuto smlouvu k pravnimu schvaleni?',
+                  message: 'Opravdu chcete odeslat tuto smlouvu k právnímu schválení?',
                 })
               }
               disabled={acting}
@@ -210,8 +210,8 @@ export function ContractDetail() {
                   setModal({
                     open: true,
                     action: 'approve',
-                    title: 'Schvalit smlouvu',
-                    message: 'Opravdu chcete schvalit tuto smlouvu?',
+                    title: 'Schválit smlouvu',
+                    message: 'Opravdu chcete schválit tuto smlouvu?',
                   })
                 }
                 disabled={acting}
@@ -224,8 +224,8 @@ export function ContractDetail() {
                   setModal({
                     open: true,
                     action: 'reject',
-                    title: 'Zamitnout smlouvu',
-                    message: 'Opravdu chcete zamitnout tuto smlouvu? Vrati se do stavu draft.',
+                    title: 'Zamítnout smlouvu',
+                    message: 'Opravdu chcete zamítnout tuto smlouvu? Vrátí se do stavu draft.',
                   })
                 }
                 disabled={acting}
@@ -237,13 +237,13 @@ export function ContractDetail() {
 
           {isPendingLegal && !isLegal && (
             <p className="text-sm text-gray-500 italic">
-              Smlouva ceka na schvaleni pravnim oddelenim.
+              Smlouva čeká na schválení právním oddělením.
             </p>
           )}
 
           {!isDraft && !isPendingLegal && (
             <p className="text-sm text-gray-500 italic">
-              Zadne dostupne akce pro aktualni stav smlouvy.
+              Žádné dostupné akce pro aktuální stav smlouvy.
             </p>
           )}
         </div>
@@ -254,7 +254,7 @@ export function ContractDetail() {
         <h2 className="text-lg font-semibold text-gray-900 mb-3">Historie verzi</h2>
         <div className="text-sm text-gray-600 space-y-2">
           <div className="flex justify-between border-b border-gray-100 pb-2">
-            <span>v{contract.version} (aktualni)</span>
+            <span>v{contract.version} (aktuální)</span>
             <span>{new Date(contract.updated_at).toLocaleString('cs-CZ')}</span>
           </div>
           {contract.version > 1 && (

@@ -18,7 +18,7 @@ const TYPE_LABELS: Record<string, string> = {
   deal_vs_finance: 'Obchod vs. Finance',
   local_vs_global: 'Lokalni vs. Globalni',
   verbal_vs_written: 'Ustni vs. Pisemne',
-  sla_exception: 'SLA vyjimka',
+  sla_exception: 'SLA výjimka',
 };
 
 function getSlaInfo(deadline: string | null): { label: string; variant: 'success' | 'warning' | 'danger' | 'neutral' } {
@@ -53,7 +53,7 @@ export function ConflictPanel() {
       })
       .catch(() => {
         if (cancelled) return;
-        showError('Chyba pri nacitani konfliktu');
+        showError('Chyba při načítání konfliktu');
         setState('error');
       });
 
@@ -62,9 +62,9 @@ export function ConflictPanel() {
     };
   }, [showError]);
 
-  if (state === 'loading') return <LoadingSpinner size="lg" message="Nacitani konfliktu..." />;
+  if (state === 'loading') return <LoadingSpinner size="lg" message="Načítání konfliktu..." />;
   if (state === 'error')
-    return <div className="text-center py-12 text-red-600">Chyba pri nacitani dat.</div>;
+    return <div className="text-center py-12 text-red-600">Chyba při načítání dat.</div>;
 
   const columns: DataTableColumn[] = [
     { key: 'id', label: 'ID' },
@@ -80,7 +80,7 @@ export function ConflictPanel() {
     },
     {
       key: 'customer_id',
-      label: 'Zakaznik',
+      label: 'Zákazník',
       render: (row: Conflict) => customerMap[row.customer_id] ?? row.customer_id,
     },
     {
@@ -98,7 +98,7 @@ export function ConflictPanel() {
     },
     {
       key: 'created_at',
-      label: 'Vytvoreno',
+      label: 'Vytvořeno',
       render: (row: Conflict) => new Date(row.created_at).toLocaleDateString('cs-CZ'),
     },
   ];
@@ -114,7 +114,7 @@ export function ConflictPanel() {
         columns={columns}
         data={conflicts}
         onRowClick={(row) => navigate(`/conflicts/${row.id}`)}
-        emptyMessage="Zadne konflikty."
+        emptyMessage="Žádné konflikty."
       />
     </div>
   );

@@ -38,7 +38,7 @@ export function FinanceReviewQueue() {
       })
       .catch(() => {
         if (cancelled) return;
-        showError('Chyba pri nacitani finance review');
+        showError('Chyba při načítání finance review');
         setState('error');
       });
 
@@ -47,9 +47,9 @@ export function FinanceReviewQueue() {
     };
   }, [showError]);
 
-  if (state === 'loading') return <LoadingSpinner size="lg" message="Nacitani Finance Review..." />;
+  if (state === 'loading') return <LoadingSpinner size="lg" message="Načítání Finance Review..." />;
   if (state === 'error')
-    return <div className="text-center py-12 text-red-600">Chyba pri nacitani dat.</div>;
+    return <div className="text-center py-12 text-red-600">Chyba při načítání dat.</div>;
 
   const getTimeInReview = (enteredAt: string | null): string => {
     if (!enteredAt) return '--';
@@ -61,10 +61,10 @@ export function FinanceReviewQueue() {
   };
 
   const columns: DataTableColumn[] = [
-    { key: 'opportunity_name', label: 'Nazev prilezitosti' },
+    { key: 'opportunity_name', label: 'Název příležitosti' },
     {
       key: 'customer_id',
-      label: 'Zakaznik',
+      label: 'Zákazník',
       render: (row: Opportunity) => customerMap[row.customer_id] ?? row.customer_id,
     },
     {
@@ -99,7 +99,7 @@ export function FinanceReviewQueue() {
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Finance Review Queue</h1>
         <p className="text-sm text-gray-500 mt-1">
-          {reviews.length} prilezitosti ceka na schvaleni
+          {reviews.length} příležitostí čeká na schválení
           {readonly && ' (pouze pro cteni)'}
         </p>
       </div>
@@ -108,7 +108,7 @@ export function FinanceReviewQueue() {
         columns={columns}
         data={reviews}
         onRowClick={(row) => navigate(`/finance-reviews/${row.id}`)}
-        emptyMessage="Zadne prilezitosti ve Finance Review."
+        emptyMessage="Žádné příležitosti ve Finance Review."
       />
     </div>
   );

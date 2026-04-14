@@ -23,7 +23,7 @@ const TYPE_LABELS: Record<string, string> = {
   deal_vs_finance: 'Obchod vs. Finance',
   local_vs_global: 'Lokalni vs. Globalni',
   verbal_vs_written: 'Ustni vs. Pisemne',
-  sla_exception: 'SLA vyjimka',
+  sla_exception: 'SLA výjimka',
 };
 
 export function ConflictResolution() {
@@ -54,7 +54,7 @@ export function ConflictResolution() {
     } catch (err: any) {
       if (err?.status === 404) setState('empty');
       else {
-        showError('Chyba pri nacitani konfliktu');
+        showError('Chyba při načítání konfliktu');
         setState('error');
       }
     }
@@ -64,9 +64,9 @@ export function ConflictResolution() {
     loadData();
   }, [id]);
 
-  if (state === 'loading') return <LoadingSpinner size="lg" message="Nacitani konfliktu..." />;
+  if (state === 'loading') return <LoadingSpinner size="lg" message="Načítání konfliktu..." />;
   if (state === 'empty') return <div className="text-center py-12 text-gray-500">Konflikt nenalezen.</div>;
-  if (state === 'error') return <div className="text-center py-12 text-red-600">Chyba pri nacitani dat.</div>;
+  if (state === 'error') return <div className="text-center py-12 text-red-600">Chyba při načítání dat.</div>;
   if (!conflict) return null;
 
   const strategy = getStrategyForConflictType(conflict.type);
@@ -90,11 +90,11 @@ export function ConflictResolution() {
     if (!id || !conflict) return;
 
     if (justification.trim().length < 20) {
-      setJustError('Zduvodneni musi mit alespon 20 znaku');
+      setJustError('Zdůvodnění musí mít alespoň 20 znaků');
       return;
     }
     if (!selectedVariant) {
-      showError('Vyberte variantu rozhodnuti');
+      showError('Vyberte variantu rozhodnutí');
       return;
     }
     setJustError('');
@@ -126,7 +126,7 @@ export function ConflictResolution() {
       setConflict(updated);
       showSuccess('Konflikt vyresen');
     } catch (err: any) {
-      showError(err?.message ?? 'Chyba pri reseni konfliktu');
+      showError(err?.message ?? 'Chyba při řešení konfliktu');
     } finally {
       setActing(false);
     }
@@ -140,7 +140,7 @@ export function ConflictResolution() {
       setConflict(updated);
       showSuccess('Konflikt eskalovan na L3');
     } catch (err: any) {
-      showError(err?.message ?? 'Chyba pri eskalaci');
+      showError(err?.message ?? 'Chyba při eskalaci');
     } finally {
       setActing(false);
       setEscalateModal(false);
@@ -157,7 +157,7 @@ export function ConflictResolution() {
             <span className="text-sm text-gray-500">{TYPE_LABELS[conflict.type] ?? conflict.type}</span>
           </div>
         </div>
-        <SecondaryButton onClick={() => navigate('/conflicts')}>Zpet na seznam</SecondaryButton>
+        <SecondaryButton onClick={() => navigate('/conflicts')}>Zpět na seznam</SecondaryButton>
       </div>
 
       {guardrailBlocked && (
@@ -173,7 +173,7 @@ export function ConflictResolution() {
             <dd className="mt-1 text-sm text-gray-900">{TYPE_LABELS[conflict.type] ?? conflict.type}</dd>
           </div>
           <div>
-            <dt className="text-sm font-medium text-gray-500">Zakaznik</dt>
+            <dt className="text-sm font-medium text-gray-500">Zákazník</dt>
             <dd className="mt-1 text-sm text-gray-900">
               <button
                 onClick={() => navigate(`/customers/${conflict.customer_id}`)}
@@ -213,7 +213,7 @@ export function ConflictResolution() {
             Strategie: {strategy.name} ({strategy.kcsId})
           </h3>
           <p className="text-xs text-blue-700">
-            Typ reseni: {strategy.resolutionType} |
+            Typ řešení: {strategy.resolutionType} |
             Guardrail: {strategy.guardingInvariant} |
             Fallback: {strategy.fallbackIfTimeout}
           </p>
@@ -231,7 +231,7 @@ export function ConflictResolution() {
         <div className="bg-green-50 rounded-lg border border-green-200 p-6">
           <h3 className="text-sm font-semibold text-green-800 mb-2">Vyreseno</h3>
           <p className="text-sm text-green-700">Rozhodnuti: {conflict.resolution_decision}</p>
-          <p className="text-sm text-green-700">Zduvodneni: {conflict.resolution_justification}</p>
+          <p className="text-sm text-green-700">Zdůvodnění: {conflict.resolution_justification}</p>
           <p className="text-xs text-green-600 mt-2">
             Vyresil: {conflict.resolved_by_id} dne {conflict.resolved_at ? new Date(conflict.resolved_at).toLocaleString('cs-CZ') : '--'}
           </p>
@@ -241,7 +241,7 @@ export function ConflictResolution() {
       {conflict.status === 'escalated_l3' && (
         <div className="bg-amber-50 rounded-lg border border-amber-200 p-6">
           <h3 className="text-sm font-semibold text-amber-800">Eskalovano na L3</h3>
-          <p className="text-sm text-amber-700">Tento konflikt byl eskalovan na vyssi uroven reseni.</p>
+          <p className="text-sm text-amber-700">Tento konflikt byl eskalován na vyšší úroveň řešení.</p>
         </div>
       )}
 
@@ -250,7 +250,7 @@ export function ConflictResolution() {
           <h2 className="text-lg font-semibold text-gray-900">Rozhodnuti</h2>
 
           <SelectInput
-            label="Varianta rozhodnuti"
+            label="Varianta rozhodnutí"
             value={selectedVariant}
             onChange={setSelectedVariant}
             options={variantOptions}
@@ -267,14 +267,14 @@ export function ConflictResolution() {
           )}
 
           <TextInput
-            label="Zduvodneni rozhodnuti"
+            label="Zdůvodnění rozhodnutí"
             value={justification}
             onChange={(v) => {
               setJustification(v);
               if (v.trim().length >= 20) setJustError('');
             }}
             type="textarea"
-            placeholder="Minimalne 20 znaku... Popiste proc jste zvolili tuto variantu."
+            placeholder="Minimálně 20 znaků... Popište proč jste zvolili tuto variantu."
             error={justError}
             required
           />
@@ -298,7 +298,7 @@ export function ConflictResolution() {
         onClose={() => setEscalateModal(false)}
         onConfirm={handleEscalate}
         title="Eskalovat na L3"
-        message="Opravdu chcete eskalovat tento konflikt na uroven L3? Rozhodnuti bude preneseno na vyssi management."
+        message="Opravdu chcete eskalovat tento konflikt na úroveň L3? Rozhodnutí bude přeneseno na vyšší management."
         variant="danger"
       />
     </div>
