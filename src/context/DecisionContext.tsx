@@ -373,6 +373,205 @@ const CONFLICT_TYPE_TO_KCS: Record<string, string> = {
 };
 
 // ---------------------------------------------------------------------------
+// Pre-seeded Decision Records (for demo / presentation)
+// Based on resolved conflicts from seed data (CNF-002, CNF-004, CNF-006,
+// CNF-008, CNF-010) + additional records to demonstrate pattern detection
+// ---------------------------------------------------------------------------
+
+const SEED_DECISION_RECORDS: DecisionRecord[] = [
+  // --- Resolved conflicts from seed data ---
+  {
+    id: 'DR-001',
+    conflictId: 'CNF-002',
+    conflictType: 'data_ownership',
+    kcsId: 'KCS-01',
+    escalationLevel: 'L2 — Management',
+    situation: 'Zakaznik Prager Industrie registrovan v CZ i DE — spor o vlastnictvi uctu mezi CZ a DE tymem.',
+    chosenVariant: 'kcs01-merge',
+    chosenVariantLabel: 'Sloucit zaznamy',
+    decidedBy: 'Tomas Cerny (Management)',
+    justification: 'Zakaznik registrovan v CZ, primarni kontakt Praha. DE tym bude sekundarnim spravcem.',
+    timestamp: '2026-02-15T14:00:00Z',
+    guardrailCheck: 'passed',
+  },
+  {
+    id: 'DR-002',
+    conflictId: 'CNF-004',
+    conflictType: 'deal_vs_finance',
+    kcsId: 'KCS-02',
+    escalationLevel: 'L2 — Finance Controller',
+    situation: 'Opportunity OPP-008 (Bohemia Tech, 1.8M EUR) blokovana finance gate — zakaznik ma otevrenou pohledavku 45k EUR.',
+    chosenVariant: 'kcs02-conditional',
+    chosenVariantLabel: 'Podmínecne schvalit',
+    decidedBy: 'Karel Dvorak (Finance Controller)',
+    justification: 'Strategicky vyznam zakaznika opravnuje kompromis. Podmineno uhrazenim pohledavky do 30 dnu.',
+    timestamp: '2026-02-28T16:00:00Z',
+    guardrailCheck: 'passed',
+  },
+  {
+    id: 'DR-003',
+    conflictId: 'CNF-006',
+    conflictType: 'local_vs_global',
+    kcsId: 'KCS-08',
+    escalationLevel: 'L2 — Regional Director',
+    situation: 'AT region pozaduje odlisne compliance prilohy ke smlouve — odchylka od globalni smluvni sablony.',
+    chosenVariant: 'kcs08-grant-local-exception',
+    chosenVariantLabel: 'Udelit lokalni vyjimku',
+    decidedBy: 'Anna Kralova (Regional Director)',
+    justification: 'AT pozadavky legitimni (GDPR specifika), neovlivnuji globalni smlouvu. Vyjimka s casovym omezenim 12 mesicu.',
+    timestamp: '2026-01-25T14:00:00Z',
+    guardrailCheck: 'passed',
+  },
+  {
+    id: 'DR-004',
+    conflictId: 'CNF-008',
+    conflictType: 'verbal_vs_written',
+    kcsId: 'KCS-04',
+    escalationLevel: 'L2 — Account Manager',
+    situation: 'Zakaznik Krakow Steel tvrdi, ze Sales slibil 2 bezplatne servisni navstevy rocne — ve smlouve neni.',
+    chosenVariant: 'kcs04-accept-change',
+    chosenVariantLabel: 'Prijmout zmenu',
+    decidedBy: 'Martin Vesely (Legal/Compliance)',
+    justification: 'Ustni dohoda neprukazna, ale kompromis chrani vztah. Reseni: 1x zdarma + 1x sleva 50%.',
+    timestamp: '2026-02-05T14:00:00Z',
+    guardrailCheck: 'passed',
+  },
+  {
+    id: 'DR-005',
+    conflictId: 'CNF-010',
+    conflictType: 'sla_exception',
+    kcsId: 'KCS-05',
+    escalationLevel: 'L2 — Support Manager',
+    situation: 'Gdansk Shipping pozaduje SLA vyjimku pro infrastrukturni incidenty — standardni SLA 4h je nedostatecne pro HW problemy.',
+    chosenVariant: 'kcs05-grant-exception',
+    chosenVariantLabel: 'Udelit vyjimku',
+    decidedBy: 'Karel Dvorak (Finance Controller)',
+    justification: 'Opodstatnena vyjimka pro kategorii infrastrukturnich incidentu. SLA prodlouzeno na 8h pro HW.',
+    timestamp: '2026-02-15T10:00:00Z',
+    guardrailCheck: 'passed',
+  },
+
+  // --- Additional records for pattern detection (Level 2) ---
+  // 3x deal_vs_finance:kcs02-conditional → triggers change candidate threshold
+  {
+    id: 'DR-006',
+    conflictId: 'CNF-HIST-001',
+    conflictType: 'deal_vs_finance',
+    kcsId: 'KCS-02',
+    escalationLevel: 'L2 — Finance Controller',
+    situation: 'Opportunity pro Dresden Elektronik (750k EUR) — pohledavka 22k EUR.',
+    chosenVariant: 'kcs02-conditional',
+    chosenVariantLabel: 'Podmínecne schvalit',
+    decidedBy: 'Karel Dvorak (Finance Controller)',
+    justification: 'Pohledavka mala vzhledem k hodnote dealu. Podmineno uhrazenim do 14 dnu.',
+    timestamp: '2026-01-20T10:00:00Z',
+    guardrailCheck: 'passed',
+  },
+  {
+    id: 'DR-007',
+    conflictId: 'CNF-HIST-002',
+    conflictType: 'deal_vs_finance',
+    kcsId: 'KCS-02',
+    escalationLevel: 'L2 — Finance Controller',
+    situation: 'Opportunity pro Berlin Automotive (2.1M EUR) — pohledavka 85k EUR po splatnosti.',
+    chosenVariant: 'kcs02-conditional',
+    chosenVariantLabel: 'Podmínecne schvalit',
+    decidedBy: 'Karel Dvorak (Finance Controller)',
+    justification: 'Automotive segment strategicky — podmineno splatkovym kalendarem.',
+    timestamp: '2026-02-10T09:00:00Z',
+    guardrailCheck: 'passed',
+  },
+  // 3x sla_exception:kcs05-grant-exception → another change candidate
+  {
+    id: 'DR-008',
+    conflictId: 'CNF-HIST-003',
+    conflictType: 'sla_exception',
+    kcsId: 'KCS-05',
+    escalationLevel: 'L2 — Support Manager',
+    situation: 'Skoda Machinery pozaduje SLA vyjimku pro planovane odstavky.',
+    chosenVariant: 'kcs05-grant-exception',
+    chosenVariantLabel: 'Udelit vyjimku',
+    decidedBy: 'Eva Prochazkova (Support Agent)',
+    justification: 'Planovane odstavky jsou legitimni duvod pro casovou vyjimku.',
+    timestamp: '2026-01-10T14:00:00Z',
+    guardrailCheck: 'passed',
+  },
+  {
+    id: 'DR-009',
+    conflictId: 'CNF-HIST-004',
+    conflictType: 'sla_exception',
+    kcsId: 'KCS-05',
+    escalationLevel: 'L2 — Support Manager',
+    situation: 'Wiener Logistik — SLA vyjimka pro migraci na novy system.',
+    chosenVariant: 'kcs05-grant-exception',
+    chosenVariantLabel: 'Udelit vyjimku',
+    decidedBy: 'Eva Prochazkova (Support Agent)',
+    justification: 'Migrace potrvá 2 týdny, docasne prodlouzeni SLA opodstatnene.',
+    timestamp: '2026-01-28T11:00:00Z',
+    guardrailCheck: 'passed',
+  },
+  // 2x deal_vs_finance:kcs02-approve (below threshold, no change candidate)
+  {
+    id: 'DR-010',
+    conflictId: 'CNF-HIST-005',
+    conflictType: 'deal_vs_finance',
+    kcsId: 'KCS-02',
+    escalationLevel: 'L1 — Finance Controller',
+    situation: 'Opportunity pro Moravska Strojirna (320k EUR) — zadne pohledavky.',
+    chosenVariant: 'kcs02-approve',
+    chosenVariantLabel: 'Schvalit obchod',
+    decidedBy: 'Karel Dvorak (Finance Controller)',
+    justification: 'Zakaznik bez pohledavek, standardni schvaleni.',
+    timestamp: '2026-03-01T09:00:00Z',
+    guardrailCheck: 'passed',
+  },
+  {
+    id: 'DR-011',
+    conflictId: 'CNF-HIST-006',
+    conflictType: 'deal_vs_finance',
+    kcsId: 'KCS-02',
+    escalationLevel: 'L1 — Finance Controller',
+    situation: 'Opportunity pro Salzburg Pharma (480k EUR) — pohledavka uhrazena pred schvalenim.',
+    chosenVariant: 'kcs02-approve',
+    chosenVariantLabel: 'Schvalit obchod',
+    decidedBy: 'Karel Dvorak (Finance Controller)',
+    justification: 'Pohledavka uhrazena vcera, schvaleni bez podminek.',
+    timestamp: '2026-03-05T14:00:00Z',
+    guardrailCheck: 'passed',
+  },
+  // 1x verbal_vs_written:kcs04-reject-change
+  {
+    id: 'DR-012',
+    conflictId: 'CNF-HIST-007',
+    conflictType: 'verbal_vs_written',
+    kcsId: 'KCS-04',
+    escalationLevel: 'L2 — Account Manager',
+    situation: 'Warsaw Digital tvrdi, ze Sales slibil rozsireny support — neni ve smlouve.',
+    chosenVariant: 'kcs04-reject-change',
+    chosenVariantLabel: 'Odmitnout zmenu',
+    decidedBy: 'Jan Novak (Account Manager)',
+    justification: 'Zadny dukaz o ustnim prislibu. Plati podminky dle smlouvy CTR-013.',
+    timestamp: '2026-03-08T10:00:00Z',
+    guardrailCheck: 'passed',
+  },
+  // 1x guardrail blocked attempt (demo of guardrail)
+  {
+    id: 'DR-013',
+    conflictId: 'CNF-002',
+    conflictType: 'data_ownership',
+    kcsId: 'KCS-01',
+    escalationLevel: 'L2 — Management',
+    situation: 'Pokus o opetovne rozhodnuti CNF-002 (jiz vyreseno).',
+    chosenVariant: 'kcs01-keep-separate',
+    chosenVariantLabel: 'Ponechat oddelene',
+    decidedBy: 'Hans Mueller (Sales)',
+    justification: 'DE tym nesouhlasi s predchozim rozhodnutim.',
+    timestamp: '2026-02-16T09:00:00Z',
+    guardrailCheck: 'blocked',
+  },
+];
+
+// ---------------------------------------------------------------------------
 // Suggested change messages for pattern detection
 // ---------------------------------------------------------------------------
 
@@ -435,11 +634,37 @@ interface DecisionProviderProps {
   children: React.ReactNode;
 }
 
+// ---------------------------------------------------------------------------
+// Helpers — compute initial state from seed records
+// ---------------------------------------------------------------------------
+
+function buildInitialResolvedIds(records: DecisionRecord[]): Set<string> {
+  const ids = new Set<string>();
+  for (const r of records) {
+    if (r.guardrailCheck === 'passed') ids.add(r.conflictId);
+  }
+  return ids;
+}
+
+function buildInitialPatterns(records: DecisionRecord[]): Map<string, number> {
+  const m = new Map<string, number>();
+  for (const r of records) {
+    if (r.guardrailCheck !== 'passed') continue;
+    const key = `${r.conflictType}:${r.chosenVariant}`;
+    m.set(key, (m.get(key) ?? 0) + 1);
+  }
+  return m;
+}
+
 export const DecisionProvider: React.FC<DecisionProviderProps> = ({ children }) => {
-  const [decisions, setDecisions] = useState<DecisionRecord[]>([]);
-  const [resolvedConflictIds, setResolvedConflictIds] = useState<Set<string>>(new Set());
-  const [patterns, setPatterns] = useState<Map<string, number>>(new Map());
-  const counterRef = useRef(0);
+  const [decisions, setDecisions] = useState<DecisionRecord[]>(SEED_DECISION_RECORDS);
+  const [resolvedConflictIds, setResolvedConflictIds] = useState<Set<string>>(
+    () => buildInitialResolvedIds(SEED_DECISION_RECORDS),
+  );
+  const [patterns, setPatterns] = useState<Map<string, number>>(
+    () => buildInitialPatterns(SEED_DECISION_RECORDS),
+  );
+  const counterRef = useRef(SEED_DECISION_RECORDS.length);
 
   // --- Strategy lookup ---
 
