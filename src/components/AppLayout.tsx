@@ -10,6 +10,7 @@ import { Outlet, NavLink, useLocation } from 'react-router-dom';
 import { useRole, ALL_ROLES } from '../context/RoleContext';
 import { useDecision } from '../context/DecisionContext';
 import { useDemoTour } from '../tour/DemoWalkthrough';
+import DecisionLogDrawer from '../decision/DecisionLogDrawer';
 import type { Role } from '../data/types';
 
 // ---------------------------------------------------------------------------
@@ -58,6 +59,7 @@ const AppLayout: React.FC = () => {
   const location = useLocation();
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [decisionDrawerOpen, setDecisionDrawerOpen] = useState(false);
   const [roleSwitcherSeen, setRoleSwitcherSeen] = useState(() => {
     return localStorage.getItem(ROLE_SWITCHER_SEEN_KEY) === 'true';
   });
@@ -104,6 +106,11 @@ const AppLayout: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
+      {/* Decision Log Drawer */}
+      <DecisionLogDrawer
+        isOpen={decisionDrawerOpen}
+        onClose={() => setDecisionDrawerOpen(false)}
+      />
       {/* ================================================================= */}
       {/* Header                                                            */}
       {/* ================================================================= */}
@@ -129,6 +136,7 @@ const AppLayout: React.FC = () => {
           <div className="flex items-center gap-3">
             {/* Decision Log button with badge */}
             <button
+              onClick={() => setDecisionDrawerOpen(true)}
               className="relative inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
               title="Decision Log"
             >
